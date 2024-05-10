@@ -41,7 +41,8 @@ import {
   Col,
   UncontrolledTooltip,
 } from "reactstrap";
-
+// csv
+import readCSV from "variables/readCSV.js";
 // core components
 import {
   chartExample1,
@@ -51,10 +52,14 @@ import {
 } from "variables/charts.js";
 
 function Dashboard(props) {
+  
   const [bigChartData, setbigChartData] = React.useState("data1");
   const setBgChartData = (name) => {
+    readCSV();
     setbigChartData(name);
   };
+
+
   return (
     <>
       <div className="content">
