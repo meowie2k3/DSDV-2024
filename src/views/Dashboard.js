@@ -195,7 +195,7 @@ function Dashboard(props) {
             </Card>
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col lg="6" md="12">
             <Card className="card-tasks">
               <CardHeader>
@@ -526,7 +526,7 @@ function Dashboard(props) {
               </CardBody>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
       </div>
     </>
   );

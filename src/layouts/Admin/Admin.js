@@ -39,27 +39,27 @@ function Admin(props) {
   const [sidebarOpened, setsidebarOpened] = React.useState(
     document.documentElement.className.indexOf("nav-open") !== -1
   );
-  React.useEffect(() => {
-    if (navigator.platform.indexOf("Win") > -1) {
-      document.documentElement.className += " perfect-scrollbar-on";
-      document.documentElement.classList.remove("perfect-scrollbar-off");
-      ps = new PerfectScrollbar(mainPanelRef.current, {
-        suppressScrollX: true,
-      });
-      let tables = document.querySelectorAll(".table-responsive");
-      for (let i = 0; i < tables.length; i++) {
-        ps = new PerfectScrollbar(tables[i]);
-      }
-    }
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      if (navigator.platform.indexOf("Win") > -1) {
-        ps.destroy();
-        document.documentElement.classList.add("perfect-scrollbar-off");
-        document.documentElement.classList.remove("perfect-scrollbar-on");
-      }
-    };
-  });
+  // React.useEffect(() => {
+  //   if (navigator.platform.indexOf("Win") > -1) {
+  //     document.documentElement.className += " perfect-scrollbar-on";
+  //     document.documentElement.classList.remove("perfect-scrollbar-off");
+  //     ps = new PerfectScrollbar(mainPanelRef.current, {
+  //       suppressScrollX: true,
+  //     });
+  //     let tables = document.querySelectorAll(".table-responsive");
+  //     for (let i = 0; i < tables.length; i++) {
+  //       ps = new PerfectScrollbar(tables[i]);
+  //     }
+  //   }
+  //   // Specify how to clean up after this effect:
+  //   return function cleanup() {
+  //     if (navigator.platform.indexOf("Win") > -1) {
+  //       ps.destroy();
+  //       document.documentElement.classList.add("perfect-scrollbar-off");
+  //       document.documentElement.classList.remove("perfect-scrollbar-on");
+  //     }
+  //   };
+  // });
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
       let tables = document.querySelectorAll(".table-responsive");
@@ -74,10 +74,10 @@ function Admin(props) {
     }
   }, [location]);
   // this function opens and closes the sidebar on small devices
-  const toggleSidebar = () => {
-    document.documentElement.classList.toggle("nav-open");
-    setsidebarOpened(!sidebarOpened);
-  };
+  // const toggleSidebar = () => {
+  //   document.documentElement.classList.toggle("nav-open");
+  //   setsidebarOpened(!sidebarOpened);
+  // };
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -102,7 +102,7 @@ function Admin(props) {
       {({ color, changeColor }) => (
         <React.Fragment>
           <div className="wrapper">
-            <Sidebar
+            {/* <Sidebar
               routes={routes}
               logo={{
                 outterLink: "https://www.creative-tim.com/",
@@ -110,13 +110,13 @@ function Admin(props) {
                 imgSrc: logo,
               }}
               toggleSidebar={toggleSidebar}
-            />
-            <div className="main-panel" ref={mainPanelRef} data={color}>
-              <AdminNavbar
+            /> */}
+            <div style={{ paddingLeft: '15px', paddingRight: '15px' , paddingTop: '15px'}} data={color}>
+              {/* <AdminNavbar
                 brandText={getBrandText(location.pathname)}
                 toggleSidebar={toggleSidebar}
                 sidebarOpened={sidebarOpened}
-              />
+              /> */}
               <Routes>
                 {getRoutes(routes)}
                 <Route
@@ -126,11 +126,11 @@ function Admin(props) {
               </Routes>
               {
                 // we don't want the Footer to be rendered on map page
-                location.pathname === "/admin/maps" ? null : <Footer fluid />
+                // location.pathname === "/admin/maps" ? null : <Footer fluid />
               }
             </div>
           </div>
-          <FixedPlugin bgColor={color} handleBgClick={changeColor} />
+          {/* <FixedPlugin bgColor={color} handleBgClick={changeColor} /> */}
         </React.Fragment>
       )}
     </BackgroundColorContext.Consumer>
