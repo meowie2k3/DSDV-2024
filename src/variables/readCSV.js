@@ -1,7 +1,7 @@
 import Papa from "papaparse";
 
 const dataLink =
-  "https://raw.githubusercontent.com/meowie2k3/DSDV-2024/main/src/assets/csv/AAPL.csv?token=GHSAT0AAAAAACRZPXCINBEHNXBIWTE54V4GZR64EQA";
+  "https://raw.githubusercontent.com/meowie2k3/DSDV-2024/main/src/assets/csv/AAPL.csv";
 
 // Import PapaParse library
 
