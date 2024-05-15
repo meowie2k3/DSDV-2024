@@ -1,7 +1,6 @@
 
-
 // chartExample1 and chartExample2 options
-let chart1_2_options = {
+export let chart1_2_options = {
   maintainAspectRatio: false,
   legend: {
     display: false,
@@ -47,39 +46,62 @@ let chart1_2_options = {
   },
 };
 
+function getQuarterLabel(quarter, year) {
+  // return an array of labels for the given month and year
+  let labels = [];
+  // get monday date of weeks in given quarter and year
+  let date = new Date(year, quarter * 3 - 3, 1);
+
+  // move to first monday of the month
+  while (date.getDay() !== 2) {
+    date.setDate(date.getDate() + 1);
+  }
+
+  let endQuarter = date.getMonth() + 3;
+
+  while (date.getMonth() < endQuarter) {
+    labels.push(date.toISOString().split("T")[0]);
+    date.setDate(date.getDate() + 7);
+  }
+
+  // reformat to dd-mm-yyyy, if <10 add 0
+  labels = labels.map((label) => {
+    let date = new Date(label);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    return `${day < 10 ? "0" + day : day}-${
+      month < 10 ? "0" + month : month
+    }-${year}`;
+  });
+
+  return labels;
+}
+
+function inputPattern(input) {
+  // input is year or quarter-year, return [quarter, year]
+  let pattern = /^(\d{1,2})-(\d{4})$/;
+  let match = input.match(pattern);
+  if (match) {
+    return [parseInt(match[1]), parseInt(match[2])];
+  
+  } else {
+    return null;
+  }
+}
+
 // #########################################
 // // // used inside src/views/Dashboard.js
 // #########################################
-let chartExample1 = {
-  data1: (canvas) => {
-    let ctx = canvas.getContext("2d");
-
-    let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
-    gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
-    gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
+export function ChartExample1 (data) {
 
     return {
-      labels: [
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC",
-      ],
+      labels: getQuarterLabel(1, 2015),
       datasets: [
         {
-          label: "My First dataset",
+          label: "AAPL Stock Price",
           fill: true,
-          backgroundColor: gradientStroke,
+          backgroundColor: "rgba(29,140,248,0.1)",
           borderColor: "#1f8ef1",
           borderWidth: 2,
           borderDash: [],
@@ -91,108 +113,16 @@ let chartExample1 = {
           pointHoverRadius: 4,
           pointHoverBorderWidth: 15,
           pointRadius: 4,
-          data: [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
+          data: data,
         },
       ],
     };
-  },
-  data2: (canvas) => {
-    let ctx = canvas.getContext("2d");
-
-    let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
-    gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
-    gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
-
-    return {
-      labels: [
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC",
-      ],
-      datasets: [
-        {
-          label: "My First dataset",
-          fill: true,
-          backgroundColor: gradientStroke,
-          borderColor: "#1f8ef1",
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          pointBackgroundColor: "#1f8ef1",
-          pointBorderColor: "rgba(255,255,255,0)",
-          pointHoverBackgroundColor: "#1f8ef1",
-          pointBorderWidth: 20,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 15,
-          pointRadius: 4,
-          data: [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
-        },
-      ],
-    };
-  },
-  data3: (canvas) => {
-    let ctx = canvas.getContext("2d");
-
-    let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
-    gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
-    gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
-
-    return {
-      labels: [
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC",
-      ],
-      datasets: [
-        {
-          label: "My First dataset",
-          fill: true,
-          backgroundColor: gradientStroke,
-          borderColor: "#1f8ef1",
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          pointBackgroundColor: "#1f8ef1",
-          pointBorderColor: "rgba(255,255,255,0)",
-          pointHoverBackgroundColor: "#1f8ef1",
-          pointBorderWidth: 20,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 15,
-          pointRadius: 4,
-          data: [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130],
-        },
-      ],
-    };
-  },
-  options: chart1_2_options,
 };
 
 // #########################################
 // // // used inside src/views/Dashboard.js
 // #########################################
-let chartExample2 = {
+export let chartExample2 = {
   data: (canvas) => {
     let ctx = canvas.getContext("2d");
 
@@ -231,7 +161,7 @@ let chartExample2 = {
 // #########################################
 // // // used inside src/views/Dashboard.js
 // #########################################
-let chartExample3 = {
+export let chartExample3 = {
   data: (canvas) => {
     let ctx = canvas.getContext("2d");
 
@@ -306,7 +236,7 @@ let chartExample3 = {
 // #########################################
 // // // used inside src/views/Dashboard.js
 // #########################################
-const chartExample4 = {
+export const chartExample4 = {
   data: (canvas) => {
     let ctx = canvas.getContext("2d");
 
@@ -385,11 +315,4 @@ const chartExample4 = {
       },
     },
   },
-};
-
-module.exports = {
-  chartExample1, // in src/views/Dashboard.js
-  chartExample2, // in src/views/Dashboard.js
-  chartExample3, // in src/views/Dashboard.js
-  chartExample4, // in src/views/Dashboard.js
 };

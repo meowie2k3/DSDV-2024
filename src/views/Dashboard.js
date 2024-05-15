@@ -25,28 +25,30 @@ import {
   Col,
   UncontrolledTooltip,
 } from "reactstrap";
-// csv
-import readCSV from "variables/readCSV.js";
+// get data
+import { getQuarterData } from "variables/readCSV";
 // core components
 import {
-  chartExample1,
+  chart1_2_options,
+  ChartExample1,
   chartExample2,
   chartExample3,
   chartExample4,
 } from "variables/charts.js";
 
 function Dashboard(props) {
+
+  const [data, setData] = React.useState([]);
+    React.useEffect(() => {
+      async function fetchData() {
+        const quarterData = await getQuarterData(1, 2015);
+        setData(quarterData);
+      }
+      fetchData();
+    }, []);
+
   
-  const [bigChartData, setbigChartData] = React.useState("data1");
-  const setBgChartData = (name) => {
-    setbigChartData(name);
-  };
-
-  async function getCSV() {
-    const data = await readCSV();
-    console.log(data);
-  }
-
+  const [lineChartTime, setLineChartTime] = React.useState("1-2015");
 
   return (
     <>
@@ -57,8 +59,8 @@ function Dashboard(props) {
               <CardHeader>
                 <Row>
                   <Col className="text-left" sm="6">
-                    <h5 className="card-category">Total Shipments</h5>
-                    <CardTitle tag="h2">Performance</CardTitle>
+                    <h5 className="card-category">Apple Stock</h5>
+                    <CardTitle tag="h2">Trend</CardTitle>
                   </Col>
                   <Col sm="6">
                     <ButtonGroup
@@ -68,15 +70,15 @@ function Dashboard(props) {
                       <Button
                         tag="label"
                         className={classNames("btn-simple", {
-                          active: bigChartData === "data1",
+                          active: lineChartTime === "1-2015",
                         })}
                         color="info"
                         id="0"
                         size="sm"
-                        onClick={async () => await getCSV()}
+                        onClick={() => setLineChartTime("1-2015")}
                       >
                         <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                          Accounts
+                          By quarter
                         </span>
                         <span className="d-block d-sm-none">
                           <i className="tim-icons icon-single-02" />
@@ -88,12 +90,12 @@ function Dashboard(props) {
                         size="sm"
                         tag="label"
                         className={classNames("btn-simple", {
-                          active: bigChartData === "data2",
+                          active: lineChartTime === "2015",
                         })}
-                        onClick={() => setBgChartData("data2")}
+                        onClick={() => setLineChartTime("2015")}
                       >
                         <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                          Purchases
+                          By year
                         </span>
                         <span className="d-block d-sm-none">
                           <i className="tim-icons icon-gift-2" />
@@ -105,12 +107,12 @@ function Dashboard(props) {
                         size="sm"
                         tag="label"
                         className={classNames("btn-simple", {
-                          active: bigChartData === "data3",
+                          active: lineChartTime === "total",
                         })}
-                        onClick={() => setBgChartData("data3")}
+                        onClick={() => setLineChartTime("total")}
                       >
                         <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                          Sessions
+                          All dataset
                         </span>
                         <span className="d-block d-sm-none">
                           <i className="tim-icons icon-tap-02" />
@@ -123,8 +125,8 @@ function Dashboard(props) {
               <CardBody>
                 <div className="chart-area">
                   <Line
-                    data={chartExample1[bigChartData]}
-                    options={chartExample1.options}
+                    data={ChartExample1(data)}
+                    options={chart1_2_options}
                   />
                 </div>
               </CardBody>
@@ -144,7 +146,7 @@ function Dashboard(props) {
                 <div className="chart-area">
                   <Line
                     data={chartExample2.data}
-                    options={chartExample2.options}
+                    options={chart1_2_options}
                   />
                 </div>
               </CardBody>
@@ -163,7 +165,7 @@ function Dashboard(props) {
                 <div className="chart-area">
                   <Bar
                     data={chartExample3.data}
-                    options={chartExample3.options}
+                    options={chart1_2_options}
                   />
                 </div>
               </CardBody>

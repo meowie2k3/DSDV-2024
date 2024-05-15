@@ -16,4 +16,17 @@ async function readCSV() {
     const rows = results.data; // array of objects
     return rows;
 }
+
+export async function getQuarterData(quarter, year){
+    const data = await readCSV();
+
+    //pick data for the given quarter and year
+    const quarterData = data.filter((row) => {
+        const date = new Date(row.Date);
+        return date.getFullYear() === year && Math.floor(date.getMonth() / 3) + 1 === quarter;
+    });
+    // return Adj Close column
+    return quarterData.map((row) => parseFloat(row["Adj Close"]));
+}
+
 export default readCSV;
