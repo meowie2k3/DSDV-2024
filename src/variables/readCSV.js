@@ -17,6 +17,48 @@ async function readCSV() {
     return rows;
 }
 
+export async function InputTime(input) {
+    if (input === "total") getAllDataset();
+
+    // if input is yyyy
+    if (input.length === 4) {
+        // input is string, convert to number
+        const year = parseInt(input);
+        return getYearDate(year);
+    }
+    // if input is q-yyyy
+    if (input.length === 6) {
+        const quarter = parseInt(input[0]);
+        const year = parseInt(input.slice(2));
+        return getQuarterData(quarter, year);
+    }
+}
+
+async function getAllDataset(){
+    const data = await readCSV();
+    
+
+}
+
+export async function getYearDate(year){
+    const data = await readCSV();
+
+    //pick data for the given year
+    const yearData = data.filter((row) => {
+        const date = new Date(row.Date);
+        return date.getFullYear() === year;
+    });
+
+    const averageMonth = new Array(12).fill(0);
+    // calculate average of each month
+    yearData.forEach((row) => {
+        const date = new Date(row.Date);
+        averageMonth[date.getMonth()] += parseFloat(row["Adj Close"]);
+    });
+    // return Adj Close column
+    return averageMonth.map((month) => month / 12);
+}
+
 export async function getQuarterData(quarter, year){
     const data = await readCSV();
 

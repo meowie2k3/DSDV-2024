@@ -41,6 +41,9 @@ export let chart1_2_options = {
       ticks: {
         padding: 20,
         fontColor: "#9a9a9a",
+        autoSkip: false,
+        maxRotation: 90,
+        minRotation: 45,
       },
     },
   },
@@ -76,18 +79,6 @@ function getQuarterLabel(quarter, year) {
   });
 
   return labels;
-}
-
-function inputPattern(input) {
-  // input is year or quarter-year, return [quarter, year]
-  let pattern = /^(\d{1,2})-(\d{4})$/;
-  let match = input.match(pattern);
-  if (match) {
-    return [parseInt(match[1]), parseInt(match[2])];
-  
-  } else {
-    return null;
-  }
 }
 
 // #########################################

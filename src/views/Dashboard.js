@@ -1,5 +1,5 @@
 
-import React from "react";
+import { useState, useEffect } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // react plugin used to create charts
@@ -13,10 +13,10 @@ import {
   CardHeader,
   CardBody,
   CardTitle,
+  Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  UncontrolledDropdown,
   Label,
   FormGroup,
   Input,
@@ -38,17 +38,95 @@ import {
 
 function Dashboard(props) {
 
-  const [data, setData] = React.useState([]);
-    React.useEffect(() => {
-      async function fetchData() {
-        const quarterData = await getQuarterData(1, 2015);
-        setData(quarterData);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const quarterData = await getQuarterData(1, 2015);
+      setData(quarterData);
+    }
+    fetchData();
+  }, []);
+
+  const [timeType, setTimeType] = useState("quarter");
+
+  const handleChangeTimeType = (type) => {
+    setTimeType(type);
+  };
+
+
+
+  const [lineChartTime, setLineChartTime] = useState("1-2015");
+
+  const changeTime = (time) => {
+    setLineChartTime(time);
+  };
+  
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
+
+  const quarters = [
+    'IV-2014', 'I-2015', 'II-2015', 'III-2015', 'IV-2015',
+    'I-2016', 'II-2016', 'III-2016', 'IV-2016',
+    'I-2017', 'II-2017', 'III-2017', 'IV-2017',
+    'I-2018'
+  ];
+
+  function parseInput(input){
+    // input is year then return string year, else return string quarter-year
+    let pattern = /^\d{4}$/;
+    if (pattern.test(input)) {
+      return input.toString();
+    } else {
+      // quarter is in roman numeral, convert to decimal
+      let quarter = input.split('-')[0];
+      let year = input.split('-')[1];
+      let quarterDecimal = 0;
+      switch (quarter) {
+        case 'I':
+          quarterDecimal = 1;
+          break;
+        case 'II':
+          quarterDecimal = 2;
+          break;
+        case 'III':
+          quarterDecimal = 3;
+          break;
+        case 'IV':
+          quarterDecimal = 4;
+          break;
+        default:
+          break;
       }
-      fetchData();
-    }, []);
+      return `${quarterDecimal}-${year}`;
+    }
+  }
+
+  const [selectedQuarterYear, setSelectedQuarterYear] = useState("I-2015");
+
+  const handleSelect = (quarter) => {
+    setSelectedQuarterYear(quarter);
+    console.log(quarter);
+    let time = parseInput(quarter);
+    changeTime(time);
+    console.log(time);
+  };
+
+  const dropdownMenuStyle = {
+    maxHeight: '200px',
+    overflowY: 'auto',
+    backgroundColor: '#1e1e2f',
+    color: '#f8f5f3'
+  };
+
+  const dropdownItemStyle = {
+    backgroundColor: '#1e1e2f',
+    color: '#f8f5f3'
+  };
+
 
   
-  const [lineChartTime, setLineChartTime] = React.useState("1-2015");
 
   return (
     <>
@@ -61,21 +139,36 @@ function Dashboard(props) {
                   <Col className="text-left" sm="6">
                     <h5 className="card-category">Apple Stock</h5>
                     <CardTitle tag="h2">Trend</CardTitle>
+                    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                      <DropdownToggle caret>{selectedQuarterYear}</DropdownToggle>
+                      <DropdownMenu style={dropdownMenuStyle}>
+                        {quarters.map((quarter, index) => (
+                          <DropdownItem
+                            key={index}
+                            onClick={() => handleSelect(quarter)}
+                            style={dropdownItemStyle}
+                          >
+                            {quarter}
+                          </DropdownItem>
+                        ))}
+                      </DropdownMenu>
+                    </Dropdown>
                   </Col>
                   <Col sm="6">
                     <ButtonGroup
                       className="btn-group-toggle float-right"
                       data-toggle="buttons"
                     >
+
                       <Button
                         tag="label"
                         className={classNames("btn-simple", {
-                          active: lineChartTime === "1-2015",
+                          active: timeType === "quarter",
                         })}
                         color="info"
                         id="0"
                         size="sm"
-                        onClick={() => setLineChartTime("1-2015")}
+                        onClick={() => handleChangeTimeType("quarter")}
                       >
                         <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                           By quarter
@@ -90,9 +183,9 @@ function Dashboard(props) {
                         size="sm"
                         tag="label"
                         className={classNames("btn-simple", {
-                          active: lineChartTime === "2015",
+                          active: timeType === "year",
                         })}
-                        onClick={() => setLineChartTime("2015")}
+                        onClick={() => handleChangeTimeType("year")}
                       >
                         <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                           By year
@@ -107,9 +200,9 @@ function Dashboard(props) {
                         size="sm"
                         tag="label"
                         className={classNames("btn-simple", {
-                          active: lineChartTime === "total",
+                          active: timeType === "total",
                         })}
-                        onClick={() => setLineChartTime("total")}
+                        onClick={() => handleChangeTimeType("total")}
                       >
                         <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                           All dataset
