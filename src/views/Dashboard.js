@@ -26,7 +26,7 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 // get data
-import { getQuarterData } from "variables/readCSV";
+import { getData } from "variables/readCSV";
 // core components
 import {
   chart1_2_options,
@@ -38,29 +38,29 @@ import {
 
 function Dashboard(props) {
 
+  const [selectedTime, setSelectedTime] = useState("I-2015");
+
+  async function fetchData(time) {
+    const dataSelectedTime = await getData(time);
+    console.log(dataSelectedTime);
+    setData(dataSelectedTime);
+  }
+
+
+
+
   const [data, setData] = useState([]);
   useEffect(() => {
-    async function fetchData() {
-      const quarterData = await getQuarterData(1, 2015);
-      setData(quarterData);
-    }
-    fetchData();
+    fetchData(selectedTime);
   }, []);
+
+  const handleChangeSelectedTime = async (time) => {
+    setSelectedTime(time);
+    fetchData(time);
+  }
 
   const [timeType, setTimeType] = useState("quarter");
 
-  const handleChangeTimeType = (type) => {
-    setTimeType(type);
-  };
-
-
-
-  const [lineChartTime, setLineChartTime] = useState("1-2015");
-
-  const changeTime = (time) => {
-    setLineChartTime(time);
-  };
-  
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -73,44 +73,34 @@ function Dashboard(props) {
     'I-2018'
   ];
 
-  function parseInput(input){
-    // input is year then return string year, else return string quarter-year
-    let pattern = /^\d{4}$/;
-    if (pattern.test(input)) {
-      return input.toString();
-    } else {
-      // quarter is in roman numeral, convert to decimal
-      let quarter = input.split('-')[0];
-      let year = input.split('-')[1];
-      let quarterDecimal = 0;
-      switch (quarter) {
-        case 'I':
-          quarterDecimal = 1;
-          break;
-        case 'II':
-          quarterDecimal = 2;
-          break;
-        case 'III':
-          quarterDecimal = 3;
-          break;
-        case 'IV':
-          quarterDecimal = 4;
-          break;
-        default:
-          break;
-      }
-      return `${quarterDecimal}-${year}`;
+  const years = [
+    '2014', '2015', '2016', '2017', '2018'
+  ];
+
+  const [dropdownItems, setDropdownItems] = useState(quarters);
+
+  const handleChangeTimeType = async (type) => {
+    if(type === "quarter") {
+      setDropdownItems(quarters);
+      handleSelect("I-2015");
     }
-  }
+    if(type === "year") {
+      setDropdownItems(years);
+      handleSelect("2014");
+    }
+    if(type === "total") {
+      setDropdownItems([]);
+      handleSelect("Total");
+    }
+    
+    setTimeType(type);
+  };
 
-  const [selectedQuarterYear, setSelectedQuarterYear] = useState("I-2015");
 
-  const handleSelect = (quarter) => {
-    setSelectedQuarterYear(quarter);
-    console.log(quarter);
-    let time = parseInput(quarter);
-    changeTime(time);
+
+  const handleSelect = (time) => {
     console.log(time);
+    handleChangeSelectedTime(time);
   };
 
   const dropdownMenuStyle = {
@@ -124,6 +114,8 @@ function Dashboard(props) {
     backgroundColor: '#1e1e2f',
     color: '#f8f5f3'
   };
+
+  
 
 
   
@@ -140,15 +132,15 @@ function Dashboard(props) {
                     <h5 className="card-category">Apple Stock</h5>
                     <CardTitle tag="h2">Trend</CardTitle>
                     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-                      <DropdownToggle caret>{selectedQuarterYear}</DropdownToggle>
+                      <DropdownToggle caret>{selectedTime}</DropdownToggle>
                       <DropdownMenu style={dropdownMenuStyle}>
-                        {quarters.map((quarter, index) => (
+                        {dropdownItems.map((dropdownItem, index) => (
                           <DropdownItem
                             key={index}
-                            onClick={() => handleSelect(quarter)}
+                            onClick={() => handleSelect(dropdownItem)}
                             style={dropdownItemStyle}
                           >
-                            {quarter}
+                            {dropdownItem}
                           </DropdownItem>
                         ))}
                       </DropdownMenu>
@@ -218,7 +210,7 @@ function Dashboard(props) {
               <CardBody>
                 <div className="chart-area">
                   <Line
-                    data={ChartExample1(data)}
+                    data={ChartExample1(data, selectedTime)}
                     options={chart1_2_options}
                   />
                 </div>

@@ -1,4 +1,4 @@
-
+import { parseInput } from "./readCSV";
 // chartExample1 and chartExample2 options
 export let chart1_2_options = {
   maintainAspectRatio: false,
@@ -81,13 +81,43 @@ function getQuarterLabel(quarter, year) {
   return labels;
 }
 
+function getYearLabel(year) {
+  // return an array of labels for the given year
+  let labels = [];
+  for (let i = 0; i < 12; i++) {
+    // name of the month
+    let month = new Date(year, i, 1).toLocaleString("default", { month: "short" });
+    labels.push(`${month}-${year}`);
+  }
+  return labels;
+}
+
+
+function getLabel(input) {
+  // if input is yyyy
+  if (input.length === 4) {
+    // input is string, convert to number
+    const year = parseInt(input);
+    return getYearLabel(year);
+  }
+  // if input is q-yyyy
+  if (input.length === 6 || input.length === 7 || input.length === 8) {
+    // format: q-yyyy
+    // quarter in roman numeral
+    input = parseInput(input);
+    const quarter = parseInt(input.split("-")[0]);
+    const year = parseInt(input.split("-")[1]);
+    return getQuarterLabel(quarter, year);
+  }
+}
+
 // #########################################
 // // // used inside src/views/Dashboard.js
 // #########################################
-export function ChartExample1 (data) {
+export function ChartExample1 (data, time) {
 
     return {
-      labels: getQuarterLabel(1, 2015),
+      labels: getLabel(time),
       datasets: [
         {
           label: "AAPL Stock Price",

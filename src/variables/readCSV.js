@@ -17,19 +17,53 @@ async function readCSV() {
     return rows;
 }
 
-export async function InputTime(input) {
-    if (input === "total") getAllDataset();
+export function parseInput(input){
+    // input is year then return string year, else return string quarter-year
+    let pattern = /^\d{4}$/;
+    if (pattern.test(input)) {
+      return input.toString();
+    } else {
+      // quarter is in roman numeral, convert to decimal
+      let quarter = input.split('-')[0];
+      let year = input.split('-')[1];
+      let quarterDecimal = 0;
+      switch (quarter) {
+        case 'I':
+          quarterDecimal = 1;
+          break;
+        case 'II':
+          quarterDecimal = 2;
+          break;
+        case 'III':
+          quarterDecimal = 3;
+          break;
+        case 'IV':
+          quarterDecimal = 4;
+          break;
+        default:
+          break;
+      }
+      return `${quarterDecimal}-${year}`;
+    }
+  }
+
+export async function getData(input) {
+    if (input === "Total") return getAllDataset();
 
     // if input is yyyy
     if (input.length === 4) {
         // input is string, convert to number
         const year = parseInt(input);
-        return getYearDate(year);
+        return getYearData(year);
     }
     // if input is q-yyyy
-    if (input.length === 6) {
-        const quarter = parseInt(input[0]);
-        const year = parseInt(input.slice(2));
+    else {
+        // console.log("quarter - year" + input);
+        // format: q-yyyy
+        // quarter in roman numeral
+        input = parseInput(input);
+        const quarter = parseInt(input.split('-')[0]);
+        const year = parseInt(input.split('-')[1]);
         return getQuarterData(quarter, year);
     }
 }
@@ -40,7 +74,7 @@ async function getAllDataset(){
 
 }
 
-export async function getYearDate(year){
+async function getYearData(year){
     const data = await readCSV();
 
     //pick data for the given year
@@ -59,7 +93,7 @@ export async function getYearDate(year){
     return averageMonth.map((month) => month / 12);
 }
 
-export async function getQuarterData(quarter, year){
+async function getQuarterData(quarter, year){
     const data = await readCSV();
 
     //pick data for the given quarter and year
