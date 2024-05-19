@@ -97,7 +97,7 @@ function Dashboard(props) {
 
 
   const handleSelect = (time) => {
-    console.log(time);
+    //console.log(time);
     handleChangeSelectedTime(time);
   };
 
