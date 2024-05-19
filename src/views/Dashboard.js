@@ -42,11 +42,9 @@ function Dashboard(props) {
 
   async function fetchData(time) {
     const dataSelectedTime = await getData(time);
-    console.log(dataSelectedTime);
+    //console.log(dataSelectedTime);
     setData(dataSelectedTime);
   }
-
-
 
 
   const [data, setData] = useState([]);
