@@ -55,14 +55,19 @@ function getQuarterLabel(quarter, year) {
   // get monday date of weeks in given quarter and year
   let date = new Date(year, quarter * 3 - 3, 1);
 
+  console.log(date);
+
   // move to first monday of the month
   while (date.getDay() !== 2) {
     date.setDate(date.getDate() + 1);
+    console.log(date);
   }
 
   let endQuarter = date.getMonth() + 3;
 
-  while (date.getMonth() < endQuarter) {
+  //console.log(date.getMonth() + " " + endQuarter);
+
+  while (date.getMonth() < endQuarter && date.getFullYear() === year ){
     labels.push(date.toISOString().split("T")[0]);
     date.setDate(date.getDate() + 7);
   }
