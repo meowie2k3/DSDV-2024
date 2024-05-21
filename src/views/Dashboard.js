@@ -38,7 +38,7 @@ import {
 
 function Dashboard(props) {
 
-  const [selectedTime, setSelectedTime] = useState("I-2015");
+  const [selectedTime, setSelectedTime] = useState("IV-2014");
 
   async function fetchData(time) {
     const dataSelectedTime = await getData(time);
@@ -80,13 +80,13 @@ function Dashboard(props) {
   const handleChangeTimeType = async (type) => {
     if(type === "quarter") {
       setDropdownItems(quarters);
-      handleSelect("I-2015");
+      handleSelect("IV-2014");
     }
     if(type === "year") {
       setDropdownItems(years);
       handleSelect("2014");
     }
-    if(type === "total") {
+    if(type === "Total") {
       setDropdownItems([]);
       handleSelect("Total");
     }
@@ -190,9 +190,9 @@ function Dashboard(props) {
                         size="sm"
                         tag="label"
                         className={classNames("btn-simple", {
-                          active: timeType === "total",
+                          active: timeType === "Total",
                         })}
-                        onClick={() => handleChangeTimeType("total")}
+                        onClick={() => handleChangeTimeType("Total")}
                       >
                         <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                           All dataset
