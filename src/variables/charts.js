@@ -1,6 +1,6 @@
 import { parseInput } from "./readCSV";
 // chartExample1 and chartExample2 options
-export let chart1_2_options = {
+export let linechar1 = {
   maintainAspectRatio: false,
   legend: {
     display: false,
@@ -49,6 +49,50 @@ export let chart1_2_options = {
   },
 };
 
+export let barChartOptions = {
+  maintainAspectRatio: false,
+  legend: {
+    display: false,
+  },
+  tooltips: {
+    backgroundColor: "#f5f5f5",
+    titleFontColor: "#333",
+    bodyFontColor: "#666",
+    bodySpacing: 4,
+    xPadding: 12,
+    mode: "nearest",
+    intersect: 0,
+    position: "nearest",
+  },
+  responsive: true,
+  scales: {
+    yAxes: {
+      gridLines: {
+        drawBorder: false,
+        color: "rgba(225,78,202,0.1)",
+        zeroLineColor: "transparent",
+      },
+      ticks: {
+        suggestedMin: 60,
+        suggestedMax: 120,
+        padding: 20,
+        fontColor: "#9e9e9e",
+      },
+    },
+    xAxes: {
+      gridLines: {
+        drawBorder: false,
+        color: "rgba(225,78,202,0.1)",
+        zeroLineColor: "transparent",
+      },
+      ticks: {
+        padding: 20,
+        fontColor: "#9e9e9e",
+      },
+    },
+  },
+};
+
 function getQuarterLabel(quarter, year) {
   // return an array of labels for the given month and year
   let labels = [];
@@ -67,7 +111,7 @@ function getQuarterLabel(quarter, year) {
 
   //console.log(date.getMonth() + " " + endQuarter);
 
-  while (date.getMonth() < endQuarter && date.getFullYear() === year ){
+  while (date.getMonth() < endQuarter && date.getFullYear() === year) {
     labels.push(date.toISOString().split("T")[0]);
     date.setDate(date.getDate() + 7);
   }
@@ -78,9 +122,8 @@ function getQuarterLabel(quarter, year) {
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
-    return `${day < 10 ? "0" + day : day}-${
-      month < 10 ? "0" + month : month
-    }-${year}`;
+    return `${day < 10 ? "0" + day : day}-${month < 10 ? "0" + month : month
+      }-${year}`;
   });
 
   return labels;
@@ -114,7 +157,7 @@ function getLabel(input) {
     const year = parseInt(input.split("-")[1]);
     return getQuarterLabel(quarter, year);
   }
-  else{
+  else {
     // total
     // 184 empty labels
     let label = new Array(184).fill("");
@@ -131,30 +174,30 @@ function getLabel(input) {
 // #########################################
 // // // used inside src/views/Dashboard.js
 // #########################################
-export function ChartExample1 (data, time) {
+export function ChartExample1(data, time) {
 
-    return {
-      labels: getLabel(time),
-      datasets: [
-        {
-          label: "AAPL Stock Price",
-          fill: true,
-          backgroundColor: "rgba(29,140,248,0.1)",
-          borderColor: "#1f8ef1",
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          pointBackgroundColor: "#1f8ef1",
-          pointBorderColor: "rgba(255,255,255,0)",
-          pointHoverBackgroundColor: "#1f8ef1",
-          pointBorderWidth: 20,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 15,
-          pointRadius: time === "Total" ? 2 : 3,
-          data: data,
-        },
-      ],
-    };
+  return {
+    labels: getLabel(time),
+    datasets: [
+      {
+        label: "AAPL Stock Price",
+        fill: true,
+        backgroundColor: "rgba(29,140,248,0.1)",
+        borderColor: "#1f8ef1",
+        borderWidth: 2,
+        borderDash: [],
+        borderDashOffset: 0.0,
+        pointBackgroundColor: "#1f8ef1",
+        pointBorderColor: "rgba(255,255,255,0)",
+        pointHoverBackgroundColor: "#1f8ef1",
+        pointBorderWidth: 20,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 15,
+        pointRadius: time === "Total" ? 2 : 3,
+        data: data,
+      },
+    ],
+  };
 };
 
 // #########################################
@@ -174,7 +217,7 @@ export let chartExample3 = {
       labels: ["USA", "GER", "AUS", "UK", "RO", "BR"],
       datasets: [
         {
-          label: "Countries",
+          label: "Volumn",
           fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
@@ -186,49 +229,6 @@ export let chartExample3 = {
         },
       ],
     };
-  },
-  options: {
-    maintainAspectRatio: false,
-    legend: {
-      display: false,
-    },
-    tooltips: {
-      backgroundColor: "#f5f5f5",
-      titleFontColor: "#333",
-      bodyFontColor: "#666",
-      bodySpacing: 4,
-      xPadding: 12,
-      mode: "nearest",
-      intersect: 0,
-      position: "nearest",
-    },
-    responsive: true,
-    scales: {
-      yAxes: {
-        gridLines: {
-          drawBorder: false,
-          color: "rgba(225,78,202,0.1)",
-          zeroLineColor: "transparent",
-        },
-        ticks: {
-          suggestedMin: 60,
-          suggestedMax: 120,
-          padding: 20,
-          fontColor: "#9e9e9e",
-        },
-      },
-      xAxes: {
-        gridLines: {
-          drawBorder: false,
-          color: "rgba(225,78,202,0.1)",
-          zeroLineColor: "transparent",
-        },
-        ticks: {
-          padding: 20,
-          fontColor: "#9e9e9e",
-        },
-      },
-    },
   },
 };
 

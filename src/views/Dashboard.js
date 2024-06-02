@@ -24,7 +24,8 @@ import {
 import { getData } from "variables/readCSV";
 // core components
 import {
-  chart1_2_options,
+  linechar1,
+  barChartOptions,
   ChartExample1,
   chartExample3,
   chartExample4,
@@ -116,8 +117,13 @@ function Dashboard(props) {
               <CardHeader>
                 <Row>
                   <Col className="text-left" sm="6">
-                    <h5 className="card-category">Apple Stock</h5>
-                    <CardTitle tag="h2">Trend</CardTitle>
+                  
+                    <h5 className="card-category">
+                    Apple Stock</h5>
+                    <CardTitle tag="h2">
+                    <i className="tim-icons icon-chart-bar-32 text-info" />{" "}
+                    Trend
+                    </CardTitle>
                     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
                       <DropdownToggle caret>{selectedTime}</DropdownToggle>
                       <DropdownMenu style={dropdownMenuStyle}>
@@ -198,7 +204,7 @@ function Dashboard(props) {
                 <div className="chart-area">
                   <Line
                     data={ChartExample1(data, selectedTime)}
-                    options={chart1_2_options}
+                    options={linechar1}
                   />
                 </div>
               </CardBody>
@@ -209,17 +215,17 @@ function Dashboard(props) {
           <Col lg="4">
             <Card className="card-chart">
               <CardHeader>
-                <h5 className="card-category">Daily Sales</h5>
+                {/*<h5 className="card-category">Volumn exchange</h5>*/}
                 <CardTitle tag="h3">
-                  <i className="tim-icons icon-delivery-fast text-primary" />{" "}
-                  3,500€
+                  <i className="tim-icons icon-money-coins text-primary" />{" "}
+                  Volumn exchange
                 </CardTitle>
               </CardHeader>
               <CardBody>
                 <div className="chart-area">
                   <Bar
                     data={chartExample3.data}
-                    options={chart1_2_options}
+                    options={barChartOptions}
                   />
                 </div>
               </CardBody>
@@ -237,7 +243,7 @@ function Dashboard(props) {
                 <div className="chart-area">
                   <Line
                     data={chartExample4.data}
-                    options={chartExample4.options}
+                    options={linechar1}
                   />
                 </div>
               </CardBody>
