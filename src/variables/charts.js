@@ -114,6 +114,18 @@ function getLabel(input) {
     const year = parseInt(input.split("-")[1]);
     return getQuarterLabel(quarter, year);
   }
+  else{
+    // total
+    // 184 empty labels
+    let label = new Array(184).fill("");
+    //2014
+    label[0] = "2014";
+    label[14] = "2015";
+    label[66] = "2016";
+    label[118] = "2017";
+    label[170] = "2018";
+    return label;
+  }
 }
 
 // #########################################
@@ -138,50 +150,11 @@ export function ChartExample1 (data, time) {
           pointBorderWidth: 20,
           pointHoverRadius: 4,
           pointHoverBorderWidth: 15,
-          pointRadius: 4,
+          pointRadius: time === "Total" ? 2 : 3,
           data: data,
         },
       ],
     };
-};
-
-// #########################################
-// // // used inside src/views/Dashboard.js
-// #########################################
-export let chartExample2 = {
-  data: (canvas) => {
-    let ctx = canvas.getContext("2d");
-
-    let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
-    gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
-    gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
-
-    return {
-      labels: ["JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
-      datasets: [
-        {
-          label: "Data",
-          fill: true,
-          backgroundColor: gradientStroke,
-          borderColor: "#1f8ef1",
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          pointBackgroundColor: "#1f8ef1",
-          pointBorderColor: "rgba(255,255,255,0)",
-          pointHoverBackgroundColor: "#1f8ef1",
-          pointBorderWidth: 20,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 15,
-          pointRadius: 4,
-          data: [80, 100, 70, 80, 120, 80],
-        },
-      ],
-    };
-  },
-  options: chart1_2_options,
 };
 
 // #########################################

@@ -70,7 +70,7 @@ export async function getData(input) {
 
 async function getAllDataset(){
     const data = await readCSV();
-    
+    return data.map((row) => parseFloat(row["Adj Close"]));
 
 }
 
