@@ -245,7 +245,7 @@ export function chartExample3(data, time) {
           data: data.map((row) => parseFloat(row["High"])),
         },
         {
-          label: "Volumn",
+          label: "Volume (in million)",
           fill: true,
           backgroundColor: "rgba(72,72,176,0.1)",
           hoverBackgroundColor: "rgba(72,72,176,0.1)",

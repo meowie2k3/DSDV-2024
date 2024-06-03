@@ -217,7 +217,7 @@ function Dashboard(props) {
                 {/*<h5 className="card-category">Volumn exchange</h5>*/}
                 <CardTitle tag="h3">
                   <i className="tim-icons icon-money-coins text-primary" />{" "}
-                  High-Low-Volumn
+                  High-Low-Volume
                 </CardTitle>
               </CardHeader>
               <CardBody>
