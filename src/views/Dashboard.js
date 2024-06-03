@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+import { Line, Bar,  } from "react-chartjs-2";
 
 // reactstrap components
 import {
@@ -28,7 +28,6 @@ import {
   barChartOptions,
   ChartExample1,
   chartExample3,
-  chartExample4,
 } from "variables/charts.js";
 
 function Dashboard(props) {
@@ -212,38 +211,20 @@ function Dashboard(props) {
           </Col>
         </Row>
         <Row>
-          <Col lg="4">
+          <Col xs="12">
             <Card className="card-chart">
               <CardHeader>
                 {/*<h5 className="card-category">Volumn exchange</h5>*/}
                 <CardTitle tag="h3">
                   <i className="tim-icons icon-money-coins text-primary" />{" "}
-                  Volumn exchange
+                  High-Low-Volumn
                 </CardTitle>
               </CardHeader>
               <CardBody>
                 <div className="chart-area">
                   <Bar
-                    data={chartExample3.data}
+                    data={chartExample3(data, selectedTime)}
                     options={barChartOptions}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col lg="4">
-            <Card className="card-chart">
-              <CardHeader>
-                <h5 className="card-category">Completed Tasks</h5>
-                <CardTitle tag="h3">
-                  <i className="tim-icons icon-send text-success" /> 12,100K
-                </CardTitle>
-              </CardHeader>
-              <CardBody>
-                <div className="chart-area">
-                  <Line
-                    data={chartExample4.data}
-                    options={linechar1}
                   />
                 </div>
               </CardBody>

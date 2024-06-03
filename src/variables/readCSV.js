@@ -70,27 +70,50 @@ export async function getData(input) {
 
 async function getAllDataset(){
     const data = await readCSV();
-    return data.map((row) => parseFloat(row["Adj Close"]));
+    return data;
 
 }
 
 async function getYearData(year){
     const data = await readCSV();
-
+    // console.log(data);
     //pick data for the given year
     const yearData = data.filter((row) => {
         const date = new Date(row.Date);
         return date.getFullYear() === year;
     });
-
-    const averageMonth = new Array(12).fill(0);
+    // Open,High,Low,Close,Adj Close,Volume
+    const averageMonth = Array.from({ length: 12 }, () => ({
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Adj Close": 0,
+        "Volume": 0
+    }));
+    let monthAppear = Array.from({ length: 12 }, () => 0);
     // calculate average of each month
     yearData.forEach((row) => {
         const date = new Date(row.Date);
-        averageMonth[date.getMonth()] += parseFloat(row["Adj Close"]);
+        // all column Open,High,Low,Close,Adj Close,Volume
+        averageMonth[date.getMonth()]["Open"] += parseFloat(row.Open);
+        averageMonth[date.getMonth()]["High"] += parseFloat(row.High);
+        averageMonth[date.getMonth()]["Low"] += parseFloat(row.Low);
+        averageMonth[date.getMonth()]["Close"] += parseFloat(row.Close);
+        averageMonth[date.getMonth()]["Adj Close"] += parseFloat(row["Adj Close"]);
+        averageMonth[date.getMonth()]["Volume"] += parseFloat(row.Volume);
+        monthAppear[date.getMonth()] += 1;
     });
-    // return Adj Close column
-    return averageMonth.map((month) => month / 12);
+    // calculate average
+    averageMonth.forEach((month) => {
+        month["Open"] /= monthAppear[averageMonth.indexOf(month)];
+        month["High"] /= monthAppear[averageMonth.indexOf(month)];
+        month["Low"] /= monthAppear[averageMonth.indexOf(month)];
+        month["Close"] /= monthAppear[averageMonth.indexOf(month)];
+        month["Adj Close"] /= monthAppear[averageMonth.indexOf(month)];
+        month["Volume"] /= monthAppear[averageMonth.indexOf(month)];
+    });
+    return averageMonth;
 }
 
 async function getQuarterData(quarter, year){
@@ -102,7 +125,9 @@ async function getQuarterData(quarter, year){
         return date.getFullYear() === year && Math.floor(date.getMonth() / 3) + 1 === quarter;
     });
     // return Adj Close column
-    return quarterData.map((row) => parseFloat(row["Adj Close"]));
+    // return quarterData.map((row) => parseFloat(row["Adj Close"]));
+    // return all columns
+    return quarterData;
 }
 
 export default readCSV;
