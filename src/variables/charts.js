@@ -88,6 +88,9 @@ export let barChartOptions = {
       ticks: {
         padding: 20,
         fontColor: "#9e9e9e",
+        autoSkip: false,
+        maxRotation: 90,
+        minRotation: 45,
       },
     },
   },
@@ -209,7 +212,7 @@ export function chartExample3(data, time) {
       labels: getLabel(time),
       datasets: [
         {
-          label: "Open Price",
+          label: "Low Price",
           type: "line",
           fill: true,
             backgroundColor: "rgba(72,72,176,0)",
@@ -227,7 +230,7 @@ export function chartExample3(data, time) {
           data: data.map((row) => parseFloat(row["Low"])),
         },
         {
-          label: "Close Price",
+          label: "High Price",
           type: "line",
           fill: true,
           backgroundColor: "rgba(72,72,176,0)",
