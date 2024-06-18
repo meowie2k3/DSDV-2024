@@ -226,7 +226,7 @@ export function chartExample3(data, time) {
           pointBorderWidth: 20,
           pointHoverRadius: 4,
           pointHoverBorderWidth: 15,
-          pointRadius: time === "Total" ? 2 : 3,
+          pointRadius: time === "Total" ? 1 : 2,
           data: data.map((row) => parseFloat(row["Low"])),
         },
         {
@@ -244,7 +244,7 @@ export function chartExample3(data, time) {
           pointBorderWidth: 20,
           pointHoverRadius: 4,
           pointHoverBorderWidth: 15,
-          pointRadius: time === "Total" ? 2 : 3,
+          pointRadius: time === "Total" ? 1 : 2,
           data: data.map((row) => parseFloat(row["High"])),
         },
         {
